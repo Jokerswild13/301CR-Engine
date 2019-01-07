@@ -1,0 +1,42 @@
+
+
+I have implemented a few cameras. 3 to be precise. When you press one, or when you start the game it goes to camera one which is a simple behind the ship camera.
+Camera 2 is a bird's eye view which follows the ship while it goes through the map.
+The third one is from the bottom of the ship and you can see the upper surface. In the gluLookAt function in the beginning we tell the camera which direction to look at
+, and we need  to do this for each of the x,y,z.
+This is done by (camerafollow->position.x - (camerafollow->heading.x * distance) // for x and it is the same for the rest. Then we need to say which of them is going to
+ be the center of the camera with camerafollow->position.x, camerafollow->position.y, camerafollow->position.z,
+			0.0, 1.0, 0.0
+
+Next I will talk about creating my track. It is two squares of asteroids, one is a bit bigger and one a bit smaller. We start by creating the smaller one. Doing each asteroid
+would take too long so we use a for loop:
+for (int p = 0;p < 19; p++) //first inside line (right)
+	{
+		GameEngine::addGameObject(new Asteroid(glm::vec3(5.0, 0.0, v), { 0.25f, 0.27f, 0.07f }));
+		v +=7;
+	}
+which creates the part of the smaller square that is in front of the spaceship. In order to do this we create a variable v and after every asteroid created we add 7 to it.
+That increases the z on the asteroids which is the distance and as z increases the asteroids go further and further. From there for the top part of the square we use the last
+z that we had and we decrease the x value so it can move to the left, with the same formula but instead of changing the z with variable v we use a different variable on the x.
+After that for the larger square we create more asteroids first. So the for loop will be p<24 instead of p<19. After that we increase the distance between them and the starting position.
+So the starting x needs to be a bigger value so it can go more to the right. The finishing z on the first line will be bigger than the finishing z of the smaller square.
+We continue and finish the track. 
+
+My spaceship is a complicated object consisting of a lot of quadrick disks and quadrick cylinders. I do have a lot of different objects for it because quadrick cylinders are 
+built without a base and top. So for each cylinder in order to close it you have to put disks without an inner value on both sides. All of the objects have lighting properties. 
+They have shininess, diffuse and ambient light. They have a colour and a texture. For some of the objects like the front of the guns I chose not to 
+put a texture, and used just colour. I used quadrick instead of solid objects, because they allow you to wrap the texture around a cylinder without having to actually calculate the maths behind it.
+It calculates and wraps it automatically. It is used for more complicated objects like cylinders.
+
+For the lighting, I do have one light source which provides ambient light, diffuse light and reflective light. The reflective light is different for every object that is why
+I set it up separately for each object. Ambient light is the light that goes around a few places and then hits an object. It does not hit in a particular angle, but everywhere.
+Diffuse light is the light that hits in a certain direction with a certain angle. Specular light is the the white reflection on shiny objects.
+
+For my animation I made a sun that is just spinning itself and keeps the same position. This is made by multiplying the position matrix by a rotation matrix. We have to increase the angle
+every frame, because otherwise it will stop after the first one. In my animation I am rotating the Sun around the y axis, and inversing the values of x and z. That makes it rotate around itself
+without changing the position.
+
+Skybox 8 points 6 walls 1 texture.
+
+
+
